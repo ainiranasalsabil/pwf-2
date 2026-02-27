@@ -1,3 +1,6 @@
-[Aboute](hasil/about.png);
-[Login](hasil/login.png);
-[Register](hasil/register.png);
+### Register
+![Tampilan Register](hasil/register.png)
+### Login
+![Tampilan Login](hasil/login.png)
+### About
+![Tampilan Register](hasil/about.png)
