@@ -1,5 +1,5 @@
 ### Register
-![Tampilan Register](hasil/register.png)
+![Tampilan Register](hasil/Register.png)
 ### Login
 ![Tampilan Login](hasil/login.png)
 ### About
