@@ -4,3 +4,13 @@
 ![Tampilan Login](hasil/login.png)
 ### About
 ![Tampilan Register](hasil/about.png)
+### Database
+![Tampilan Register](hasil/database.png)
+### env
+![Tampilan Register](hasil/env.png)
+### Migrations
+![Tampilan Register](hasil/migrations.png)
+### ERD
+![Tampilan Register](hasil/erd.png)
+### Model
+![Tampilan Register](hasil/model.png)
