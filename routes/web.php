@@ -24,8 +24,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'can:manage-product'])->group(function () {
 
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::post('/product', [ProductController::class, 'store'])->name('product.store');

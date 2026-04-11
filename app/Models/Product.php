@@ -7,11 +7,11 @@ class Product extends Model
 
 {
     protected $fillable = [
-        'user_id',
-        'name',
-        'qty',
-        'price'
-    ];
+    'user_id',
+    'name',
+    'quantity',
+    'price'
+];
 
     public function user()
     {
