@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -22,14 +23,10 @@ class ProductController extends Controller
         return view('product.create');
     }
 
-    public function store(Request $request)
+    // ✅ STORE (VALIDATION)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'quantity' => 'required|integer',
-            'price' => 'required|numeric',
-        ]);
-
+        $validated = $request->validated();
         $validated['user_id'] = Auth::id();
 
         Product::create($validated);
@@ -44,31 +41,30 @@ class ProductController extends Controller
         return view('product.view', compact('product'));
     }
 
-    public function edit(Product $product)
-    {
-        $this->authorize('update', $product);
-
-        return view('product.edit', compact('product'));
-    }
-
-    public function update(Request $request, $id)
+    // ✅ EDIT (PAKAI POLICY)
+    public function edit($id)
     {
         $product = Product::findOrFail($id);
 
         $this->authorize('update', $product);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'quantity' => 'required|integer',
-            'price' => 'required|numeric',
-        ]);
+        return view('product.edit', compact('product'));
+    }
 
-        $product->update($validated);
+    // ✅ UPDATE (VALIDATION + POLICY)
+    public function update(UpdateProductRequest $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $this->authorize('update', $product);
+
+        $product->update($request->validated());
 
         return redirect()->route('product.index')
             ->with('success', 'Product updated successfully.');
     }
 
+    // ✅ DELETE (POLICY)
     public function delete($id)
     {
         $product = Product::findOrFail($id);

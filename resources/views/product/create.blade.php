@@ -20,29 +20,57 @@
                     </div>
                 </div>
 
+                {{-- 🔴 ERROR GLOBAL --}}
+                @if ($errors->any())
+                    <div class="mb-4 p-4 bg-red-100 border border-red-300 rounded-lg">
+                        <ul class="text-red-600 text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>• {{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('product.store') }}" method="POST" class="space-y-5">
                     @csrf
 
                     <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
+                    {{-- NAME --}}
                     <div>
                         <label class="text-sm font-medium text-gray-700">Product Name</label>
                         <input type="text" name="name" value="{{ old('name') }}"
                                class="w-full border rounded-lg px-4 py-2 mt-1">
+
+                        @error('name')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
+
+                        {{-- QUANTITY --}}
                         <div>
                             <label class="text-sm font-medium text-gray-700">Quantity</label>
                             <input type="number" name="quantity" value="{{ old('quantity') }}"
                                    class="w-full border rounded-lg px-4 py-2 mt-1">
+
+                            @error('quantity')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
+                        {{-- PRICE --}}
                         <div>
                             <label class="text-sm font-medium text-gray-700">Price</label>
                             <input type="number" name="price" value="{{ old('price') }}"
                                    class="w-full border rounded-lg px-4 py-2 mt-1">
+
+                            @error('price')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
+
                     </div>
 
                     <div class="flex justify-end gap-2 pt-4">
