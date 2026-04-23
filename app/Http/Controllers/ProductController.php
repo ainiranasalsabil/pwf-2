@@ -23,7 +23,7 @@ class ProductController extends Controller
         return view('product.create');
     }
 
-    // ✅ STORE (VALIDATION)
+    
     public function store(StoreProductRequest $request)
     {
         $validated = $request->validated();
@@ -41,7 +41,7 @@ class ProductController extends Controller
         return view('product.view', compact('product'));
     }
 
-    // ✅ EDIT (PAKAI POLICY)
+    
     public function edit($id)
     {
         $product = Product::findOrFail($id);
@@ -51,7 +51,7 @@ class ProductController extends Controller
         return view('product.edit', compact('product'));
     }
 
-    // ✅ UPDATE (VALIDATION + POLICY)
+    
     public function update(UpdateProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -64,8 +64,8 @@ class ProductController extends Controller
             ->with('success', 'Product updated successfully.');
     }
 
-    // ✅ DELETE (POLICY)
-    public function delete($id)
+    
+    public function destroy($id)
     {
         $product = Product::findOrFail($id);
 

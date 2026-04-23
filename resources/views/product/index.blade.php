@@ -7,7 +7,7 @@
                 <!-- HEADER -->
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h2 class="text-xl font-bold text-black">
+                        <h2 class="text-2xl font-bold text-gray-800">
                             Product List
                         </h2>
                         <p class="text-sm text-gray-500">
@@ -16,27 +16,23 @@
                     </div>
 
                     @can('manage-product')
-                    <a href="{{ route('product.create') }}"
-                       class="flex items-center gap-2 text-white px-5 py-2 rounded-lg text-sm font-semibold shadow-md transition"
-                       style="background-color:#2563eb;">
-                        ➕ Add Product
-                    </a>
+                    <x-add-product :url="route('product.create')" :name="'Product'" />
                     @endcan
                 </div>
 
                 <!-- TABLE -->
-                <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
                     <table class="w-full text-sm">
 
                         <!-- HEAD -->
-                        <thead class="bg-gray-200 text-gray-700 uppercase text-xs tracking-wide">
+                        <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
                             <tr>
-                                <th class="px-6 py-4 text-left">#</th>
-                                <th class="px-6 py-4 text-left">Name</th>
-                                <th class="px-6 py-4 text-left">Quantity</th>
-                                <th class="px-6 py-4 text-left">Price</th>
-                                <th class="px-6 py-4 text-left">Owner</th>
-                                <th class="px-6 py-4 text-left">Actions</th>
+                                <th class="px-6 py-3 text-left">#</th>
+                                <th class="px-6 py-3 text-left">Product</th>
+                                <th class="px-6 py-3 text-left">Stock</th>
+                                <th class="px-6 py-3 text-left">Price</th>
+                                <th class="px-6 py-3 text-left">Owner</th>
+                                <th class="px-6 py-3 text-center">Action</th>
                             </tr>
                         </thead>
 
@@ -44,67 +40,64 @@
                         <tbody class="divide-y">
 
                             @forelse($products as $product)
-                            <tr class="hover:bg-gray-50 transition">
+                            <tr class="hover:bg-gray-50 transition duration-200">
 
                                 <!-- NUMBER -->
-                                <td class="px-6 py-4 text-black">
+                                <td class="px-6 py-4 text-gray-700">
                                     {{ $loop->iteration }}
                                 </td>
 
                                 <!-- NAME -->
-                                <td class="px-6 py-4 font-semibold text-black">
+                                <td class="px-6 py-4 font-semibold text-gray-800">
                                     {{ $product->name }}
                                 </td>
 
-                                <!-- QUANTITY -->
+                                <!-- STOCK -->
                                 <td class="px-6 py-4">
                                     <span class="px-3 py-1 text-xs font-semibold rounded-full
                                         {{ $product->quantity < 10 
-                                            ? 'bg-red-100 text-black' 
-                                            : 'bg-green-100 text-black' }}">
+                                            ? 'bg-red-100 text-red-600' 
+                                            : 'bg-green-100 text-green-600' }}">
                                         {{ $product->quantity }}
                                     </span>
                                 </td>
 
                                 <!-- PRICE -->
-                                <td class="px-6 py-4 text-black">
+                                <td class="px-6 py-4 text-gray-700">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </td>
 
                                 <!-- OWNER -->
-                                <td class="px-6 py-4 text-gray-700">
+                                <td class="px-6 py-4 text-gray-600">
                                     {{ $product->user->name ?? '-' }}
                                 </td>
 
                                 <!-- ACTION -->
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center gap-4 text-sm">
+                                    <div class="flex justify-center items-center gap-2">
 
                                         <!-- VIEW -->
                                         <a href="{{ route('product.show', $product->id) }}"
-                                           class="text-gray-500 hover:text-black transition">
-                                            👁
+                                           class="inline-flex items-center px-2 py-1 text-gray-500 hover:text-black transition">
+                                            
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
+                                                    -1.274 4.057-5.065 7-9.542 7
+                                                    -4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                         </a>
 
                                         <!-- EDIT -->
                                         @can('update', $product)
-                                        <a href="{{ route('product.edit', $product) }}"
-                                           class="text-yellow-500 hover:text-yellow-600 transition">
-                                            ✏️
-                                        </a>
+                                        <x-edit-button :url="route('product.edit', $product->id)" />
                                         @endcan
 
                                         <!-- DELETE -->
                                         @can('delete', $product)
-                                        <form action="{{ route('product.delete', $product->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                onclick="return confirm('Yakin hapus data?')"
-                                                class="text-red-500 hover:text-red-600 transition">
-                                                🗑
-                                            </button>
-                                        </form>
+                                        <x-delete-button :url="route('product.destroy', $product->id)" />
                                         @endcan
 
                                     </div>

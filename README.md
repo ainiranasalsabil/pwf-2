@@ -57,3 +57,7 @@
 
 ### Validation Edit 3
 ![Validation](hasil/tugas6/validationedit3.png)
+
+---
+### hasil
+![tugas 7](hasil/tugas7/hasil.png)
