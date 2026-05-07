@@ -61,3 +61,25 @@
 ---
 ### hasil
 ![tugas 7](hasil/tugas7/hasil.png)
+
+## HASIL TUGAS 9 
+### GET KATEGORI
+![tugas 9](hasil/tugas9/getkategori.png)
+
+### POST KATEGORI
+![tugas 9](hasil/tugas9/postkategori.png)
+
+### PUT KATEGORI
+![tugas 9](hasil/tugas9/putkategori.png)
+
+### DELETE KATEGORI
+![tugas 9](hasil/tugas9/deletekategori.png)
+
+### GET PRODUK
+![tugas 9](hasil/tugas9/getproduk.png)
+
+### PUT PRODUK
+![tugas 9](hasil/tugas9/putproduk.png)
+
+### DETELE PRODUK
+![tugas 9](hasil/tugas9/deleteproduk.png)

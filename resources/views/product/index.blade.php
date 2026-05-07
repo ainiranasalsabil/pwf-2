@@ -1,122 +1,203 @@
-<x-app-layout>
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<x-app-layout> {{-- Layout utama Laravel (navbar, sidebar, dll) --}}
 
-            <div class="bg-white rounded-2xl shadow-xl p-6">
+    <div class="py-10"> {{-- jarak atas bawah --}}
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8"> {{-- container utama responsive --}}
 
-                <!-- HEADER -->
+            {{-- ================= CARD ================= --}}
+            <div class="bg-white text-black rounded-2xl shadow-xl p-6">
+            {{-- bg putih, bayangan, sudut membulat --}}
+
+                {{-- ================= HEADER ================= --}}
                 <div class="flex items-center justify-between mb-6">
+
+                    {{-- JUDUL --}}
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-800">
+                        <h2 class="text-xl font-semibold">
                             Product List
                         </h2>
-                        <p class="text-sm text-gray-500">
+
+                        <p class="text-sm text-gray-600">
                             Manage your product inventory
                         </p>
                     </div>
 
-                    @can('manage-product')
-                    <x-add-product :url="route('product.create')" :name="'Product'" />
-                    @endcan
+                    {{-- BUTTON TAMBAH --}}
+@if(auth()->user()->role === 'admin')
+
+<a href="{{ route('product.create') }}"
+   class="px-4 py-2 bg-blue-200 hover:bg-blue-300 text-black rounded-lg text-sm font-semibold border border-blue-400 shadow transition">
+
+    + Add Product
+
+</a>
+
+@endif
+
                 </div>
 
-                <!-- TABLE -->
-                <div class="border border-gray-200 rounded-xl overflow-hidden">
-                    <table class="w-full text-sm">
+                {{-- ================= TABLE ================= --}}
+<div class="overflow-x-auto rounded-xl border border-gray-300 shadow-sm">
 
-                        <!-- HEAD -->
-                        <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
-                            <tr>
-                                <th class="px-6 py-3 text-left">#</th>
-                                <th class="px-6 py-3 text-left">Product</th>
-                                <th class="px-6 py-3 text-left">Stock</th>
-                                <th class="px-6 py-3 text-left">Price</th>
-                                <th class="px-6 py-3 text-left">Owner</th>
-                                <th class="px-6 py-3 text-center">Action</th>
-                            </tr>
-                        </thead>
+    <table class="w-full text-sm text-left">
 
-                        <!-- BODY -->
-                        <tbody class="divide-y">
+        {{-- ================= HEADER TABLE ================= --}}
+        <thead class="bg-gray-200 text-gray-800 border-b-2 border-gray-400">
 
-                            @forelse($products as $product)
-                            <tr class="hover:bg-gray-50 transition duration-200">
+            <tr>
 
-                                <!-- NUMBER -->
-                                <td class="px-6 py-4 text-gray-700">
-                                    {{ $loop->iteration }}
-                                </td>
+                <th class="px-5 py-4 border-r border-gray-300 font-semibold">
+                    No
+                </th>
 
-                                <!-- NAME -->
-                                <td class="px-6 py-4 font-semibold text-gray-800">
-                                    {{ $product->name }}
-                                </td>
+                <th class="px-5 py-4 border-r border-gray-300 font-semibold">
+                    Product
+                </th>
 
-                                <!-- STOCK -->
-                                <td class="px-6 py-4">
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full
-                                        {{ $product->quantity < 10 
-                                            ? 'bg-red-100 text-red-600' 
-                                            : 'bg-green-100 text-green-600' }}">
-                                        {{ $product->quantity }}
-                                    </span>
-                                </td>
+                <th class="px-5 py-4 border-r border-gray-300 font-semibold">
+                    Category
+                </th>
 
-                                <!-- PRICE -->
-                                <td class="px-6 py-4 text-gray-700">
-                                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                                </td>
+                <th class="px-5 py-4 border-r border-gray-300 font-semibold">
+                    Stock
+                </th>
 
-                                <!-- OWNER -->
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ $product->user->name ?? '-' }}
-                                </td>
+                <th class="px-5 py-4 border-r border-gray-300 font-semibold">
+                    Price
+                </th>
 
-                                <!-- ACTION -->
-                                <td class="px-6 py-4">
-                                    <div class="flex justify-center items-center gap-2">
+                <th class="px-5 py-4 border-r border-gray-300 font-semibold">
+                    Owner
+                </th>
 
-                                        <!-- VIEW -->
-                                        <a href="{{ route('product.show', $product->id) }}"
-                                           class="inline-flex items-center px-2 py-1 text-gray-500 hover:text-black transition">
-                                            
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
-                                                    -1.274 4.057-5.065 7-9.542 7
-                                                    -4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                        </a>
+                <th class="px-5 py-4 text-center font-semibold">
+                    Action
+                </th>
 
-                                        <!-- EDIT -->
-                                        @can('update', $product)
-                                        <x-edit-button :url="route('product.edit', $product->id)" />
-                                        @endcan
+            </tr>
 
-                                        <!-- DELETE -->
-                                        @can('delete', $product)
-                                        <x-delete-button :url="route('product.destroy', $product->id)" />
-                                        @endcan
+        </thead>
 
-                                    </div>
-                                </td>
+        {{-- ================= BODY ================= --}}
+        <tbody class="bg-white text-gray-800">
 
-                            </tr>
+            {{-- LOOP DATA --}}
+            @forelse($products as $product)
 
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-6 text-gray-400">
-                                    No products found.
-                                </td>
-                            </tr>
-                            @endforelse
+            <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
 
-                        </tbody>
+                {{-- NOMOR --}}
+                <td class="px-5 py-4 border-r border-gray-200 font-medium text-gray-700">
+                    {{ $loop->iteration }}
+                </td>
 
-                    </table>
-                </div>
+                {{-- NAMA --}}
+                <td class="px-5 py-4 border-r border-gray-200 font-semibold text-black">
+                    {{ $product->name }}
+                </td>
+
+                {{-- KATEGORI --}}
+                <td class="px-5 py-4 border-r border-gray-200 text-gray-700">
+                    {{ optional($product->kategori)->name ?? '-' }}
+                </td>
+
+                {{-- STOCK --}}
+                <td class="px-5 py-4 border-r border-gray-200">
+
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold
+                        {{ $product->qty < 10
+                            ? 'bg-red-100 text-red-700 border border-red-300'
+                            : 'bg-blue-100 text-blue-700 border border-blue-300'
+                        }}">
+
+                        {{ $product->qty }}
+
+                    </span>
+
+                </td>
+
+                {{-- PRICE --}}
+                <td class="px-5 py-4 border-r border-gray-200 font-medium text-gray-800">
+                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                </td>
+
+                {{-- OWNER --}}
+                <td class="px-5 py-4 border-r border-gray-200 text-gray-700">
+                    {{ optional($product->user)->name ?? '-' }}
+                </td>
+
+                {{-- ACTION --}}
+                <td class="px-5 py-4">
+
+                    <div class="flex justify-center gap-3">
+
+                        {{-- VIEW --}}
+                        <a href="{{ route('product.show', $product->id) }}"
+                           class="text-blue-600 hover:text-blue-800 font-medium transition">
+
+                            👁️
+
+                        </a>
+
+                        {{-- EDIT --}}
+                        @can('update', $product)
+
+                        <a href="{{ route('product.edit', $product->id) }}"
+                           class="text-blue-600 hover:text-blue-800 font-medium transition">
+
+                            ✏️
+
+                        </a>
+
+                        @endcan
+
+                        {{-- DELETE --}}
+                        @can('delete', $product)
+
+                        <form action="{{ route('product.destroy', $product->id) }}"
+                              method="POST">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                onclick="return confirm('Yakin ingin menghapus produk ini?')"
+                                class="text-red-600 hover:text-red-800 font-medium transition">
+
+                                🗑️
+
+                            </button>
+
+                        </form>
+
+                        @endcan
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {{-- JIKA KOSONG --}}
+            @empty
+
+            <tr>
+
+                <td colspan="7"
+                    class="text-center py-8 text-gray-500">
+
+                    No products found.
+
+                </td>
+
+            </tr>
+
+            @endforelse
+
+        </tbody>
+
+    </table>
+
+</div>
 
             </div>
 

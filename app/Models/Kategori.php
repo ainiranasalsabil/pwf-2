@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
 {
-    protected $fillable = [
-        'product_id',
-        'name'
-    ];
+    // Menentukan nama tabel karena tidak mengikuti default Laravel (kategoris, bukan kategoris -> categories)
+    protected $table = 'kategoris';
 
-    public function product()
+    // Menentukan kolom yang boleh diisi (mass assignment)
+    protected $fillable = ['name'];
+
+    // Relasi: satu kategori memiliki banyak produk
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Product::class, 'kategori_id');
     }
 }
